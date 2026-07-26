@@ -4,6 +4,7 @@ Platformer Game
 python -m arcade.examples.platform_tutorial.01_open_window
 """
 import arcade
+import random
 
 WINDOW_WIDTH = 400
 WINDOW_HEIGHT = 300
@@ -11,13 +12,18 @@ WINDOW_HEIGHT = 300
 
 class GameView(arcade.Window):
     def __init__(self):
-        super().__init__(WINDOW_WIDTH, WINDOW_HEIGHT, "zee's window",  resizable=True)
-        self.background_color = arcade.csscolor.WHITE
-        self.player_texture = arcade.load_texture("sprite.jpeg")
-
-        self.spirte1 = arcade.Sprite(self.player_texture)
-        self.spirte1.center_x = 64
-        self.spirte1.center_y = 128
+            super().__init__(WINDOW_WIDTH, WINDOW_HEIGHT, "zee's window", resizable=True)
+            self.background_color = arcade.csscolor.WHITE
+            self.player_texture = arcade.load_texture("sprite.jpeg")
+    
+            self.sprite_list = arcade.SpriteList()
+    
+            self.sprites = [self.sprite_list.append(arcade.Sprite(self.player_texture)) for _ in range(10)]
+    
+            for sprite in self.sprite_list:
+                sprite.center_x = random.randint(1, 400)
+                sprite.center_y = random.randint(1, 300)
+                print(sprite.center_x, sprite.center_y)
 
 
     def setup(self):
@@ -27,10 +33,9 @@ class GameView(arcade.Window):
 
     def on_draw(self):
         self.clear()
-        arcade.draw_sprite(self.spirte1)
+        self.sprite_list.draw()
 
     def on_resize(self, width, height):
-        print(self.width, self.height)
         return super().on_resize(width, height)
 
 
